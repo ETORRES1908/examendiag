@@ -7,6 +7,34 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
+            <div class="col-6">
+
+                <form action="{{ route('profiles.index') }}" method="get">
+                    <div class="d-md-flex justify-content-md-start">
+                        <div class="btn-group">
+                            <input type="text" class="form-control" name="buscar" id="buscar"
+                                placeholder="Busqueda dato empresarial">
+                            <input type="submit" value="Busqueda" class="btn btn-primary">
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="col-6">
+
+            <form action="{{ route('profiles.index') }}" method="get">
+                <div class="d-md-flex justify-content-md-end">
+                    <div class="btn-group">
+                        <input type="date" class="form-control" name="from" id="from" placeholder="Ingresa para buscar">
+                        <input type="date" class="form-control" name="to" id="to" placeholder="Ingresa para buscar">
+                    <input type="submit" value="Busqueda" class="btn btn-primary" >
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        </div>
+        <div class="row">
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
@@ -59,22 +87,26 @@
                                             <td>{{ $profile->fecha_nac }}</td>
                                             <td>
                                                 @switch ($profile->contractprofile->tipo)
-                                                @case(0)
-                                                <span class="text-success">Activo</span>
-                                                @break
-                                                @case(1)
-                                                <span class="text-success">Activo</span>
-                                                @break
-                                                @case(2)
-                                                <span class="text-success">Activo</span>
-                                                @break
-                                                @case(3)
-                                                <span class="text-danger">Inactivo</span>
-                                                @break
+                                                    @case(0)
+                                                        <span class="text-success">Activo</span>
+                                                    @break
+
+                                                    @case(1)
+                                                        <span class="text-success">Activo</span>
+                                                    @break
+
+                                                    @case(2)
+                                                        <span class="text-success">Activo</span>
+                                                    @break
+
+                                                    @case(3)
+                                                        <span class="text-danger">Inactivo</span>
+                                                    @break
                                                 @endswitch
                                             </td>
                                             <td>
-                                                <form action="{{ route('profiles.destroy', $profile->id) }}" method="POST">
+                                                <form action="{{ route('profiles.destroy', $profile->id) }}"
+                                                    method="POST">
                                                     <a class="btn btn-sm btn-primary "
                                                         href="{{ route('profiles.show', $profile->id) }}"><i
                                                             class="fa fa-fw fa-eye"></i> Ver</a>

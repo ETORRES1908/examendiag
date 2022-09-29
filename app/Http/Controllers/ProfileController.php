@@ -18,11 +18,21 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $profiles = Profile::paginate();
+        // if($request->buscar != ''){
+        $profiles = Profile::whereRelation('businessprofile','area','LIKE','%'. $request->buscar .'%')
+        ->orWhereRelation('businessprofile','cargo','LIKE','%'. $request->buscar .'%')
+        ->orWhereRelation('businessprofile','local','LIKE','%'. $request->buscar .'%')
+        ->orWhereRelation('contractprofile','fecha_inicio','>=', date($request->to))
+        ->orWhereRelation('contractprofile','fecha_fin','<=', date($request->from))
+        ->paginate();
 
-        return view('profile.index', compact('profiles'));
+        $data = [
+            "profiles" => $profiles,
+
+        ];
+        return view('profile.index', $data);
     }
 
     /**
@@ -162,8 +172,10 @@ class ProfileController extends Controller
      */
     public function destroy($id)
     {
-        $profile = Profile::find($id)->delete();
-
+        $profile = Profile::find($id);
+        $profile->contractprofile()->delete();
+        $profile->businessprofile()->delete();
+        $profile->delete();
         return redirect()->route('profiles.index')
             ->with('success', 'Empleado eliminado correctamente!');
     }
